@@ -10,6 +10,6 @@ import org.springframework.stereotype.Service;
 @Service
 public interface MusicService {
     ResponseEntity<? super PostMusicResponseDto> postMusic(PostMusicRequestDto dto);
-    ResponseEntity<GetMusicListResponseDto> getPlaylist();
-    ResponseEntity<? super DeleteMusicResponseDto> deleteBoard(Long id);
+    ResponseEntity<? super GetMusicListResponseDto> getPlaylist();
+    ResponseEntity<? super DeleteMusicResponseDto> deleteMusicByUrl(String url);
 }

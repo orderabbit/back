@@ -47,10 +47,9 @@ public class MusicServiceImplement implements MusicService {
     }
 
     @Override
-    public ResponseEntity<? super DeleteMusicResponseDto> deleteBoard(Long id) {
-
+    public ResponseEntity<? super DeleteMusicResponseDto> deleteMusicByUrl(String url) {
         try {
-            MusicEntity musicEntity = musicRepository.findById(id).orElse(null);
+            MusicEntity musicEntity = musicRepository.findByVideoUrl(url);
             if (musicEntity == null) {
                 return DeleteMusicResponseDto.notExistedMusic();
             }

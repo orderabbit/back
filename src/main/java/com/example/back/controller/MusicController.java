@@ -32,11 +32,12 @@ public class MusicController {
         return response;
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/delete/{url}")
+    @CrossOrigin(origins = "http://localhost:3000", methods = RequestMethod.DELETE)
     public ResponseEntity<? super DeleteMusicResponseDto> deleteMusic(
-            @PathVariable("id") Long id
+            @PathVariable("url") String url
     ) {
-        ResponseEntity<? super DeleteMusicResponseDto> response = musicService.deleteBoard(id);
+        ResponseEntity<? super DeleteMusicResponseDto> response = musicService.deleteMusicByUrl(url);
         return response;
     }
 }

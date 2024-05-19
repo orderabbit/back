@@ -9,7 +9,6 @@ import java.util.List;
 @Getter
 @Setter
 public class GetMusicListResponseDto extends ResponseDto {
-
     private List<String> playlist;
 
     public GetMusicListResponseDto(List<String> playlist) {

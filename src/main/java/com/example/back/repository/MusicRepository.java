@@ -16,4 +16,6 @@ public interface MusicRepository extends JpaRepository<MusicEntity, Long> {
             nativeQuery = true
     )
     List<String> findAllUrls();
+
+    MusicEntity findByVideoUrl(String url);
 }
