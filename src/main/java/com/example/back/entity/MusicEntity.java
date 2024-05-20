@@ -23,6 +23,6 @@ public class MusicEntity {
 
     public MusicEntity(PostMusicRequestDto dto){
 
-        this.videoUrl = dto.getVideoUrl();
+        this.videoUrl = ("https://www.youtube.com/watch?v=" + dto.getVideoUrl());
     }
 }

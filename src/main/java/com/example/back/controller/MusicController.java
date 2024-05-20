@@ -33,7 +33,6 @@ public class MusicController {
     }
 
     @DeleteMapping("/delete/{url}")
-    @CrossOrigin(origins = "http://localhost:3000", methods = RequestMethod.DELETE)
     public ResponseEntity<? super DeleteMusicResponseDto> deleteMusic(
             @PathVariable("url") String url
     ) {

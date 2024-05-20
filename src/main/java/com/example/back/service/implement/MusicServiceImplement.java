@@ -13,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -38,24 +37,26 @@ public class MusicServiceImplement implements MusicService {
     @Override
     public ResponseEntity<GetMusicListResponseDto> getPlaylist() {
 
-        List<MusicEntity> musicEntities = musicRepository.findAll();
-        List<String> playlist = musicEntities.stream()
-                .map(MusicEntity::getVideoUrl)
-                .collect(Collectors.toList());
+        List<String> playlist = musicRepository.findAllUrls();
         GetMusicListResponseDto responseDto = new GetMusicListResponseDto(playlist);
         return ResponseEntity.ok().body(responseDto);
     }
 
     @Override
-    public ResponseEntity<? super DeleteMusicResponseDto> deleteMusicByUrl(String url) {
+    public ResponseEntity<? super DeleteMusicResponseDto> deleteMusicByUrl(String Id) {
         try {
-            MusicEntity musicEntity = musicRepository.findByVideoUrl(url);
-            if (musicEntity == null) {
+            if (Id == null || Id.isEmpty()) {
                 return DeleteMusicResponseDto.notExistedMusic();
             }
-            musicRepository.delete(musicEntity);
-        }
-        catch (Exception e) {
+            List<MusicEntity> musicEntities = musicRepository.findByVideoUrlContaining(Id);
+            if (musicEntities.isEmpty()) {
+                return DeleteMusicResponseDto.notExistedMusic();
+            }
+
+            for (MusicEntity musicEntity : musicEntities) {
+                musicRepository.delete(musicEntity);
+            }
+        } catch (Exception e) {
             e.printStackTrace();
             return ResponseDto.databaseError();
         }

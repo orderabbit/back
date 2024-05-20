@@ -49,7 +49,7 @@ public class WebSecurityConfig {
                 )
                 .authorizeHttpRequests(request -> request
                         .requestMatchers("/api/v1/board/**", "/api/v1/board/detail/**", "/api/v1/user/", "/api/v1/search/**",
-                                "/api/v1/auth/**", "/oauth2/**","/file/**", "/**").permitAll()
+                                "/api/v1/auth/**", "/oauth2/**","/file/**", "/**", "/api/v1/music/delete/**").permitAll()
                         .requestMatchers("/api/v1/user/**").hasRole("USER")
                         .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
