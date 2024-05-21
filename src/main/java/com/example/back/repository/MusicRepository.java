@@ -12,7 +12,7 @@ public interface MusicRepository extends JpaRepository<MusicEntity, Long> {
 
     @Query(
             value =
-                    "SELECT m.video_url FROM music_list m  ORDER BY m.id ",
+                    "SELECT m.video_url FROM music_list m  ORDER BY m.id ASC",
             nativeQuery = true
     )
     List<String> findAllUrls();

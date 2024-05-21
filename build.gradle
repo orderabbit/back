@@ -47,6 +47,9 @@ dependencies {
 	implementation 'com.google.http-client:google-http-client-jackson2:1.44.1'
 
 	implementation 'org.jsoup:jsoup:1.17.2'
+	compileOnly 'javax.websocket:javax.websocket-api:1.1'
+	implementation 'org.springframework:spring-websocket:6.1.7'
+
 
 
 }
