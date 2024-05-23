@@ -34,14 +34,13 @@ public class UserEntity {
         this.role = "ROLE_USER";
     }
 
-    public UserEntity(String userId, String email, String type
-//                      String nickname, String profileImage
+    public UserEntity(String userId, String email, String type, String nickname, String profileImage
     ){
         this.userId = userId;
         this.password = "Password";
         this.email = email;
-//        this.nickname = nickname;
-//        this.profileImage = profileImage;
+        this.nickname = nickname;
+        this.profileImage = profileImage;
         this.type = type;
         this.role = "ROLE_USER";
     }

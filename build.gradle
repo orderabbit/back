@@ -50,8 +50,6 @@ dependencies {
 	compileOnly 'javax.websocket:javax.websocket-api:1.1'
 	implementation 'org.springframework:spring-websocket:6.1.7'
 
-
-
 }
 
 tasks.named('test') {

@@ -20,5 +20,6 @@ public interface ResponseCode {
     String NOT_EXISTED_BOARD = "NB";
     String NOT_EXISTED_MUSIC = "NM";
 
+    String WRONG_PASSWORD = "WP";
     String DO_NOT_HAVE_PERMISSION = "NP";
 }

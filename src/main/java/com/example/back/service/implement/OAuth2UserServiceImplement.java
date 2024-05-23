@@ -3,7 +3,6 @@ package com.example.back.service.implement;
 import com.example.back.entity.CustomOAuth2UserEntity;
 import com.example.back.entity.UserEntity;
 import com.example.back.repository.UserRepository;
-import com.example.back.service.KakaoApiService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -18,7 +17,6 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class OAuth2UserServiceImplement extends DefaultOAuth2UserService {
     private final UserRepository userRepository;
-    private final KakaoApiService kakaoApiService;
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest request) throws OAuth2AuthenticationException {
@@ -33,43 +31,44 @@ public class OAuth2UserServiceImplement extends DefaultOAuth2UserService {
 
         UserEntity userEntity = null;
         String userId = null;
-        String email = "email@email.com";
+        String email = null;
         String nickname = null;
         String profileImage = null;
 
         if (oauthClientName.equals("kakao")) {
-            userId = "kakao_" + oAuth2User.getAttributes().get("id");
-            userEntity = new UserEntity(userId, email, "kakao");
-//            profileImage = getKakaoProfileImageUrl(request.getAccessToken().getTokenValue());
-//            email = kakaoApiService.getUserEmail(request.getAccessToken().getTokenValue());
-//            nickname = kakaoApiService.getUserNickname(request.getAccessToken().getTokenValue());
+            Map<String, Object> attributes = oAuth2User.getAttributes();
+            userId = "kakao_" + attributes.get("id");
+            Map<String, Object> kakaoAccount = (Map<String, Object>) attributes.get("kakao_account");
+            email = (String) kakaoAccount.get("email");
+            Map<String, Object> profile = (Map<String, Object>) kakaoAccount.get("profile");
+            nickname = (String) profile.get("nickname");
+            profileImage = (String) profile.get("profile_image_url");
 
         } else if (oauthClientName.equals("naver")) {
-
             Map<String, String> responseMap = (Map<String, String>) oAuth2User.getAttributes().get("response");
-            userId = "naver_" + responseMap.get("id").substring(0, 14);
+            userId = "naver_" + responseMap.get("id");
             email = responseMap.get("email");
-            userEntity = new UserEntity(userId, email, "naver");
-//            profileImage = getNaverProfileImageUrl(request.getAccessToken().getTokenValue());
             nickname = responseMap.get("nickname");
-        }
-//         else if (oauthClientName.equals("google")) {
-//            profileImage = getGoogleProfileImageUrl(request.getAccessToken().getTokenValue());
-//            userId = "google_" + oAuth2User.getAttribute("sub");
-//            email = oAuth2User.getAttribute("email");
-//            nickname = oAuth2User.getAttribute("name");
-//        }
+            profileImage = responseMap.get("profile_image");
 
-//        userEntity = new UserEntity(userId, email, oauthClientName, nickname, profileImage);
-        userRepository.save(userEntity);
-//
+        } else if (oauthClientName.equals("google")) {
+            userId = "google_" + oAuth2User.getAttribute("sub");
+            email = oAuth2User.getAttribute("email");
+            nickname = oAuth2User.getAttribute("name");
+            profileImage = oAuth2User.getAttribute("picture");
+        }
+
+        if (userId != null && email != null) {
+            userEntity = new UserEntity(userId, email, oauthClientName, nickname, profileImage);
+            userRepository.save(userEntity);
+        }
+
         return new CustomOAuth2UserEntity(userId);
     }
-}
 
 //    private String getKakaoProfileImageUrl(String accessToken) {
 //        String profileApiUrl = "https://kapi.kakao.com/v2/user/me";
-//        return getProfileImageUrl(accessToken, profileApiUrl, "picture");
+//        return getProfileImageUrl(accessToken, profileApiUrl, "profile_image_url");
 //    }
 //
 //    private String getNaverProfileImageUrl(String accessToken) {
@@ -89,6 +88,6 @@ public class OAuth2UserServiceImplement extends DefaultOAuth2UserService {
 //        HttpEntity<String> entity = new HttpEntity<>(headers);
 //        ResponseEntity<String> response = restTemplate.exchange(profileApiUrl, HttpMethod.GET, entity, String.class);
 //        JSONObject jsonObject = new JSONObject(response.getBody());
-//        return jsonObject != null && jsonObject.has(imageUrlKey) ? jsonObject.getString(imageUrlKey) : null;
+//        return jsonObject.optString(imageUrlKey, null);
 //    }
-
+}

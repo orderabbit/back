@@ -19,5 +19,6 @@ public interface ResponseMessage {
     String NOT_EXISTED_BOARD = "Not Existed Board";
     String NOT_EXISTED_MUSIC = "Not Existed Music";
 
+    String WRONG_PASSWORD = "Wrong Password";
     String DO_NOT_HAVE_PERMISSION = "Do Not Have Permission";
 }

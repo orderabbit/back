@@ -10,7 +10,7 @@ import org.springframework.web.client.RestTemplate;
 public class KakaoApiService {
 
     private final String KAKAO_API_URL = "https://kapi.kakao.com/v2/user/me"; // 카카오 사용자 정보 요청 API 엔드포인트
-    private final String KAKAO_API_KEY = "38ee3c6f0ecce771ae58db71c6121ee0"; // 여기에 카카오 API 키를 입력하세요
+    private final String KAKAO_API_KEY = "38ee3c6f0ecce771ae58db71c6121ee0";
 
     public String getUserNickname(String accessToken) {
         // 카카오 API 호출을 위한 RestTemplate 객체 생성

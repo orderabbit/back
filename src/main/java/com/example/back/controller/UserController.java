@@ -1,11 +1,9 @@
 package com.example.back.controller;
 
+import com.example.back.dto.request.auth.user.ChangePasswordRequestDto;
 import com.example.back.dto.request.auth.user.PatchNicknameRequestDto;
 import com.example.back.dto.request.auth.user.PatchProfileImageRequestDto;
-import com.example.back.dto.response.user.GetSignInUserResponseDto;
-import com.example.back.dto.response.user.GetUserResponseDto;
-import com.example.back.dto.response.user.PatchNicknameResponseDto;
-import com.example.back.dto.response.user.PatchProfileImageResponseDto;
+import com.example.back.dto.response.user.*;
 import com.example.back.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -53,4 +51,14 @@ public class UserController {
         ResponseEntity<? super PatchProfileImageResponseDto> response = userService.patchProfileImage(requestBody, userId);
         return response;
     }
+
+    @PatchMapping("/change-password")
+    public ResponseEntity<? super ChangePasswordResponseDto> changePassword(
+            @RequestBody @Valid ChangePasswordRequestDto requestBody,
+            @AuthenticationPrincipal String userId
+    ){
+        ResponseEntity<? super ChangePasswordResponseDto> response = userService.changePassword(requestBody, userId);
+        return response;
+    }
+
 }
