@@ -65,29 +65,4 @@ public class OAuth2UserServiceImplement extends DefaultOAuth2UserService {
 
         return new CustomOAuth2UserEntity(userId);
     }
-
-//    private String getKakaoProfileImageUrl(String accessToken) {
-//        String profileApiUrl = "https://kapi.kakao.com/v2/user/me";
-//        return getProfileImageUrl(accessToken, profileApiUrl, "profile_image_url");
-//    }
-//
-//    private String getNaverProfileImageUrl(String accessToken) {
-//        String profileApiUrl = "https://openapi.naver.com/v1/nid/me";
-//        return getProfileImageUrl(accessToken, profileApiUrl, "profile_image");
-//    }
-//
-//    private String getGoogleProfileImageUrl(String accessToken) {
-//        String profileApiUrl = "https://www.googleapis.com/oauth2/v2/userinfo";
-//        return getProfileImageUrl(accessToken, profileApiUrl, "picture");
-//    }
-//
-//    private String getProfileImageUrl(String accessToken, String profileApiUrl, String imageUrlKey) {
-//        RestTemplate restTemplate = new RestTemplate();
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.set("Authorization", "Bearer " + accessToken);
-//        HttpEntity<String> entity = new HttpEntity<>(headers);
-//        ResponseEntity<String> response = restTemplate.exchange(profileApiUrl, HttpMethod.GET, entity, String.class);
-//        JSONObject jsonObject = new JSONObject(response.getBody());
-//        return jsonObject.optString(imageUrlKey, null);
-//    }
 }

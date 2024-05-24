@@ -1,9 +1,7 @@
 package com.example.back.entity;
 
 import com.example.back.dto.request.auth.SignUpRequestDto;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

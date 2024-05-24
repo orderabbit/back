@@ -18,10 +18,10 @@ public class AuthController {
 
     private final AuthService authService;
 
-    @GetMapping("/oauth-response/{token}")
+    @PostMapping("/oauth-response")
     public void handleOAuthResponse(@RequestParam("token") String token, HttpServletResponse response) throws IOException {
         String redirectUrl = "http://localhost:3000";
-        response.setHeader("Location", redirectUrl);
+        response.setHeader("Location", redirectUrl + "?token=" + token);
         response.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
     }
 
