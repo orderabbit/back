@@ -16,7 +16,7 @@ public class PatchBoardRequestDto {
     private String title;
     @NotBlank
     private String content;
-    @NotBlank
+    @NotNull
     private String videoUrl;
     @NotNull
     private List<String> boardImageList;

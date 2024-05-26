@@ -231,7 +231,7 @@ public class BoardServiceImplement implements BoardService {
             if(boardEntity == null) return PatchBoardResponseDto.notExistBoard();
 
             boolean existedUser = userRepository.existsByUserId(userId);
-            if(existedUser) return PatchBoardResponseDto.notExistUser();
+            if(!existedUser) return PatchBoardResponseDto.notExistUser();
 
             String writerId = boardEntity.getWriterId();
             boolean isWriter = writerId.equals(userId);

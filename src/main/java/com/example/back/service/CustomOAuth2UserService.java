@@ -1,6 +1,5 @@
 package com.example.back.service;
 
-
 import com.example.back.entity.UserEntity;
 import com.example.back.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -92,14 +91,13 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
     private OAuth2User buildKakaoUser(Map<String, Object> userInfo) {
         Map<String, Object> properties = (Map<String, Object>) userInfo.get("properties");
-        String userId = (String) userInfo.get("id");
-        String email = (String) userInfo.get("kakao_account.email");
+        Long userId = ((Number) userInfo.get("id")).longValue();
+        String email = (String) ((Map<String, Object>) userInfo.get("kakao_account")).get("email");
         String nickname = (String) properties.get("nickname");
         String profileImage = (String) properties.get("profile_image");
-        System.out.println("email: " + email);
 
         if (email != null) {
-            UserEntity userEntity = new UserEntity(userId, email, "kakao", nickname, profileImage);
+            UserEntity userEntity = new UserEntity(String.valueOf(userId), email, "kakao", nickname, profileImage);
             userRepository.save(userEntity);
         }
 
@@ -108,13 +106,12 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
     }
 
     private OAuth2User buildNaverUser(Map<String, Object> userInfo) {
+        System.out.println(userInfo);
         Map<String, Object> response = (Map<String, Object>) userInfo.get("response");
-        String userId = (String) userInfo.get("id");
+        String userId = (String) response.get("id");
         String email = (String) response.get("email");
         String nickname = (String) response.get("nickname");
         String profileImage = (String) response.get("profile_image");
-        System.out.println("userId: " + userId);
-        System.out.println("email: " + email);
 
         if (email != null) {
             UserEntity userEntity = new UserEntity(userId, email, "naver", nickname, profileImage);
@@ -126,14 +123,13 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
     }
 
     private OAuth2User buildGoogleUser(Map<String, Object> userInfo) {
-        String userId = (String) userInfo.get("id");
+        String userId = (String) userInfo.get("sub");
         String email = (String) userInfo.get("email");
         String nickname = (String) userInfo.get("name");
         String profileImage = (String) userInfo.get("picture");
-        System.out.println("email: " + email);
 
         if (email != null) {
-            UserEntity userEntity = new UserEntity(null, email, "google", nickname, profileImage);
+            UserEntity userEntity = new UserEntity(userId, email, "google", nickname, profileImage);
             userRepository.save(userEntity);
         }
 
@@ -141,25 +137,9 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         return new DefaultOAuth2User(authorities, userInfo, "email");
     }
 
-
     private static Collection<GrantedAuthority> getAuthorities(String registrationId) {
         List<GrantedAuthority> authorities = new ArrayList<>();
-
-        switch (registrationId) {
-            case "google":
-                authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
-                break;
-            case "kakao":
-                authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
-                break;
-            case "naver":
-                authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
-                break;
-            default:
-                authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
-                break;
-        }
+        authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
         return authorities;
     }
 }
-

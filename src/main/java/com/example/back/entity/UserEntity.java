@@ -15,8 +15,10 @@ import lombok.Setter;
 @Table(name="user")
 public class UserEntity {
     @Id
+    @Column(name = "user_id")
     private String userId;
     private String password;
+    @Column(name = "email")
     private String email;
     private String nickname;
     private String profileImage;
