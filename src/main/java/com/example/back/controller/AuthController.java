@@ -20,9 +20,8 @@ public class AuthController {
 
     @PostMapping("/oauth-response")
     public void handleOAuthResponse(@RequestParam("token") String token, HttpServletResponse response) throws IOException {
-        String redirectUrl = "http://localhost:3000";
-        response.setHeader("Location", redirectUrl + "?token=" + token);
-        response.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
+        String redirectUrl = "http://localhost:3000?token=" + token;
+        response.sendRedirect(redirectUrl);
     }
 
     @PostMapping("/userId-check")

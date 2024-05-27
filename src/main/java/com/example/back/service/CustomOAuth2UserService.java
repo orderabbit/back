@@ -1,5 +1,6 @@
 package com.example.back.service;
 
+import com.example.back.entity.CustomOAuth2UserEntity;
 import com.example.back.entity.UserEntity;
 import com.example.back.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +14,6 @@ import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
-import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -50,10 +50,13 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", "Bearer " + accessToken.getTokenValue());
 
+
         ResponseEntity<Map> response = new RestTemplate().exchange(GOOGLE_USERINFO_ENDPOINT, HttpMethod.GET, new HttpEntity<>(headers), Map.class);
         Map<String, Object> userInfo = response.getBody();
 
-        return buildOAuth2User(userInfo, "google");
+        OAuth2User user = buildOAuth2User(userInfo, "google");
+                    user.getAttributes().put("accessToken", accessToken.getTokenValue());
+        return user;
     }
 
     private OAuth2User loadKakaoUser(OAuth2AccessToken accessToken) {
@@ -91,7 +94,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
     private OAuth2User buildKakaoUser(Map<String, Object> userInfo) {
         Map<String, Object> properties = (Map<String, Object>) userInfo.get("properties");
-        Long userId = ((Number) userInfo.get("id")).longValue();
+        String userId = String.valueOf(userInfo.get("id"));
         String email = (String) ((Map<String, Object>) userInfo.get("kakao_account")).get("email");
         String nickname = (String) properties.get("nickname");
         String profileImage = (String) properties.get("profile_image");
@@ -102,11 +105,10 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         }
 
         Collection<GrantedAuthority> authorities = getAuthorities("kakao");
-        return new DefaultOAuth2User(authorities, userInfo, "email");
+        return new CustomOAuth2UserEntity(userId, userInfo, authorities);
     }
 
     private OAuth2User buildNaverUser(Map<String, Object> userInfo) {
-        System.out.println(userInfo);
         Map<String, Object> response = (Map<String, Object>) userInfo.get("response");
         String userId = (String) response.get("id");
         String email = (String) response.get("email");
@@ -119,7 +121,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         }
 
         Collection<GrantedAuthority> authorities = getAuthorities("naver");
-        return new DefaultOAuth2User(authorities, userInfo, "email");
+        return new CustomOAuth2UserEntity(userId, userInfo, authorities);
     }
 
     private OAuth2User buildGoogleUser(Map<String, Object> userInfo) {
@@ -134,7 +136,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         }
 
         Collection<GrantedAuthority> authorities = getAuthorities("google");
-        return new DefaultOAuth2User(authorities, userInfo, "email");
+        return new CustomOAuth2UserEntity(userId, userInfo, authorities);
     }
 
     private static Collection<GrantedAuthority> getAuthorities(String registrationId) {

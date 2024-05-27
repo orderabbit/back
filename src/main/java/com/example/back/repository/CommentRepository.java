@@ -29,5 +29,4 @@ public interface CommentRepository extends JpaRepository<CommentEntity, Integer>
 
     @Transactional
     void deleteByItemNumber(Integer itemNumber);
-
 }

@@ -162,6 +162,7 @@ public class AuthServiceImplements implements AuthService {
             exception.printStackTrace();
             return ResponseDto.databaseError();
         }
+
         return SignInResponseDto.success(token);
     }
 
