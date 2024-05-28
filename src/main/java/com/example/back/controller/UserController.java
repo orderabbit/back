@@ -68,4 +68,12 @@ public class UserController {
         ResponseEntity<? super WithdrawalUserResponseDto> response = userService.withdrawalUser(userId);
         return response;
     }
+
+    @PostMapping("/recovery-password/{email}")
+    public ResponseEntity<? super PasswordRecoveryResponseDto> passwordRecovery(
+            @RequestBody @Valid String email
+    ){
+        ResponseEntity<? super PasswordRecoveryResponseDto> response = userService.passwordRecovery(email);
+        return response;
+    }
 }

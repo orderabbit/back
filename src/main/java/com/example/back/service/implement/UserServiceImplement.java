@@ -1,6 +1,5 @@
 package com.example.back.service.implement;
 
-
 import com.example.back.dto.request.auth.user.ChangePasswordRequestDto;
 import com.example.back.dto.request.auth.user.PatchNicknameRequestDto;
 import com.example.back.dto.request.auth.user.PatchProfileImageRequestDto;
@@ -11,6 +10,7 @@ import com.example.back.repository.BoardRepository;
 import com.example.back.repository.CommentRepository;
 import com.example.back.repository.FavoriteRepository;
 import com.example.back.repository.UserRepository;
+import com.example.back.service.EmailService;
 import com.example.back.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -18,6 +18,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.security.SecureRandom;
 
 @Service
 @RequiredArgsConstructor
@@ -27,6 +29,7 @@ public class UserServiceImplement implements UserService {
     private final BoardRepository boardRepository;
     private final CommentRepository commentRepository;
     private final FavoriteRepository favoriteRepository;
+    private final EmailService emailService;
     private final PasswordEncoder passwordEncoder;
     private static final Logger log = LoggerFactory.getLogger(UserServiceImplement.class);
 
@@ -141,5 +144,41 @@ public class UserServiceImplement implements UserService {
             return ResponseDto.databaseError();
         }
         return WithdrawalUserResponseDto.success();
+    }
+
+    @Override
+    public ResponseEntity<? super PasswordRecoveryResponseDto> passwordRecovery(String email) {
+        try {
+
+            UserEntity userEntity = userRepository.findByEmail(email);
+            if (userEntity == null) return PasswordRecoveryResponseDto.notExistUser();
+
+            String temporaryPassword = generateTemporaryPassword();
+
+            userEntity.setPassword(temporaryPassword);
+            userRepository.save(userEntity);
+
+            String changePasswordUrl = "http://localhost:3000/password";
+            String emailText = "Your temporary password is: " + temporaryPassword + ". Please visit " + changePasswordUrl + " to change your password.";
+
+            emailService.sendEmail(email, "Temporary Password", emailText);
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+        return PasswordRecoveryResponseDto.success();
+    }
+
+    private String generateTemporaryPassword() {
+        int length = 10;
+        String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+";
+        SecureRandom random = new SecureRandom();
+        StringBuilder passwordBuilder = new StringBuilder(length);
+        for (int i = 0; i < length; i++) {
+            char randomChar = characters.charAt(random.nextInt(characters.length()));
+            passwordBuilder.append(randomChar);
+        }
+        return passwordBuilder.toString();
     }
 }
