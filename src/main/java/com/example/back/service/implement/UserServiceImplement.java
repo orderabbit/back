@@ -159,9 +159,10 @@ public class UserServiceImplement implements UserService {
             userRepository.save(userEntity);
 
             String changePasswordUrl = "http://localhost:3000/password";
-            String emailText = "Your temporary password is: " + temporaryPassword + ". Please visit " + changePasswordUrl + " to change your password.";
+            String emailText = "임시 비밀번호는: " + temporaryPassword + " 입니다. 비밀번호를 변경하려면 " + changePasswordUrl + " 을 방문해주세요.";
 
-            emailService.sendEmail(email, "Temporary Password", emailText);
+
+            emailService.sendEmail(email, "임시 비밀번호", emailText);
 
         } catch (Exception exception) {
             exception.printStackTrace();
