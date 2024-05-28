@@ -52,10 +52,10 @@ public class UserController {
         return response;
     }
 
-    @PatchMapping("/change-password")
+    @PatchMapping("/change-password/{userId}")
     public ResponseEntity<? super ChangePasswordResponseDto> changePassword(
             @RequestBody @Valid ChangePasswordRequestDto requestBody,
-            @AuthenticationPrincipal String userId
+            @PathVariable("userId") String userId
     ){
         ResponseEntity<? super ChangePasswordResponseDto> response = userService.changePassword(requestBody, userId);
         return response;

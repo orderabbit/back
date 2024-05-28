@@ -107,7 +107,8 @@ public class UserServiceImplement implements UserService {
             if (userEntity == null) return ChangePasswordResponseDto.notExistUser();
 
             String currentPassword = dto.getCurrentPassword();
-            if (!passwordEncoder.matches(currentPassword, userEntity.getPassword())) return ChangePasswordResponseDto.wrongPassword();
+            if (!passwordEncoder.matches(currentPassword, userEntity.getPassword()))
+                return ChangePasswordResponseDto.wrongPassword();
 
             String newPassword = dto.getNewPassword();
             String hashedPassword = passwordEncoder.encode(newPassword);
