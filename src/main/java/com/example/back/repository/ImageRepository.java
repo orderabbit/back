@@ -13,4 +13,5 @@ public interface ImageRepository extends JpaRepository<ImageEntity, Integer> {
 
     @Transactional
     void deleteByItemNumber(Integer itemNumber);
+
 }

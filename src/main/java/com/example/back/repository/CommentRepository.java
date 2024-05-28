@@ -29,4 +29,7 @@ public interface CommentRepository extends JpaRepository<CommentEntity, Integer>
 
     @Transactional
     void deleteByItemNumber(Integer itemNumber);
+
+    @Transactional
+    void deleteByUserId(String userId);
 }

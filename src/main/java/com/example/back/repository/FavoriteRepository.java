@@ -15,9 +15,6 @@ public interface FavoriteRepository extends JpaRepository<FavoriteEntity, Favori
 
     FavoriteEntity findByItemNumberAndUserId(Integer itemNumber, String userId);
 
-    @Transactional
-    void deleteByItemNumber(Integer itemNumber);
-
     @Query(
             value=
                     "SELECT " +
@@ -30,4 +27,11 @@ public interface FavoriteRepository extends JpaRepository<FavoriteEntity, Favori
             nativeQuery = true
     )
     List<GetFavoriteListResultSet> getFavoriteList(Integer itemNumber);
+
+
+    @Transactional
+    void deleteByItemNumber(Integer itemNumber);
+
+    @Transactional
+    void deleteByUserId(String userId);
 }

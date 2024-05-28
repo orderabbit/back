@@ -2,6 +2,7 @@ package com.example.back.repository;
 
 import com.example.back.entity.BoardEntity;
 import com.example.back.repository.resultSet.GetBoardResultSet;
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -12,6 +13,8 @@ public interface BoardRepository extends JpaRepository<BoardEntity, Integer> {
 
     boolean existsByItemNumber(Integer itemNumber);
     BoardEntity findByItemNumber(Integer itemNumber);
+    @Transactional
+    void deleteByWriterId(String userId);
 
     @Query(
             value=

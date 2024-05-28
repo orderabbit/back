@@ -61,4 +61,11 @@ public class UserController {
         return response;
     }
 
+    @DeleteMapping("/withdrawal/{userId}")
+    public ResponseEntity<? super WithdrawalUserResponseDto> withdrawalUser(
+            @PathVariable("userId") String userId
+    ){
+        ResponseEntity<? super WithdrawalUserResponseDto> response = userService.withdrawalUser(userId);
+        return response;
+    }
 }

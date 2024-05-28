@@ -15,4 +15,5 @@ public interface UserService {
     ResponseEntity<? super PatchNicknameResponseDto> patchNickname(PatchNicknameRequestDto dto, String userId);
     ResponseEntity<? super PatchProfileImageResponseDto> patchProfileImage(PatchProfileImageRequestDto dto, String userId);
     ResponseEntity<? super ChangePasswordResponseDto> changePassword(ChangePasswordRequestDto dto, String userId);
+    ResponseEntity<? super WithdrawalUserResponseDto> withdrawalUser(String userId);
 }

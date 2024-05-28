@@ -7,6 +7,9 @@ import com.example.back.dto.request.auth.user.PatchProfileImageRequestDto;
 import com.example.back.dto.response.ResponseDto;
 import com.example.back.dto.response.user.*;
 import com.example.back.entity.UserEntity;
+import com.example.back.repository.BoardRepository;
+import com.example.back.repository.CommentRepository;
+import com.example.back.repository.FavoriteRepository;
 import com.example.back.repository.UserRepository;
 import com.example.back.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +24,9 @@ import org.springframework.stereotype.Service;
 public class UserServiceImplement implements UserService {
 
     private final UserRepository userRepository;
+    private final BoardRepository boardRepository;
+    private final CommentRepository commentRepository;
+    private final FavoriteRepository favoriteRepository;
     private final PasswordEncoder passwordEncoder;
     private static final Logger log = LoggerFactory.getLogger(UserServiceImplement.class);
 
@@ -116,6 +122,23 @@ public class UserServiceImplement implements UserService {
         return ChangePasswordResponseDto.success();
     }
 
+    @Override
+    public ResponseEntity<? super WithdrawalUserResponseDto> withdrawalUser(String userId) {
+        try {
+            UserEntity userEntity = userRepository.findByUserId(userId);
+            if (userEntity == null) return WithdrawalUserResponseDto.notExistedUser();
 
+//            if (!passwordEncoder.matches(password, userEntity.getPassword())) return WithdrawalUserResponseDto.wrongPassword();
 
+            commentRepository.deleteByUserId(userId);
+            favoriteRepository.deleteByUserId(userId);
+            boardRepository.deleteByWriterId(userId);
+            userRepository.delete(userEntity);
+            log.info("User {} deleted successfully.", userId);
+        } catch (Exception exception) {
+            log.error("Error occurred while deleting user {}.", userId, exception);
+            return ResponseDto.databaseError();
+        }
+        return WithdrawalUserResponseDto.success();
+    }
 }
