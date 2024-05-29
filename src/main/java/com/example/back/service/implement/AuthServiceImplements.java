@@ -143,9 +143,7 @@ public class AuthServiceImplements implements AuthService {
 
     @Override
     public ResponseEntity<? super SignInResponseDto> signIn(SignInRequestDto dto) {
-
         String token = null;
-
         try{
             String userId = dto.getUserId();
             UserEntity userEntity = userRepository.findByUserId(userId);

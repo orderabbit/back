@@ -72,8 +72,8 @@ public class UserController {
 
     @PostMapping("/recovery-password")
     public ResponseEntity<? super PasswordRecoveryResponseDto> passwordRecovery(
-            @RequestBody @Valid PasswordRecoveryRequestDto requestDto
+            @RequestBody @Valid PasswordRecoveryRequestDto dto
     ) {
-        return userService.passwordRecovery(requestDto.getEmail());
+        return userService.passwordRecovery(dto.getEmail());
     }
 }

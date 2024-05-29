@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +31,7 @@ public class UserServiceImplement implements UserService {
     private final CommentRepository commentRepository;
     private final FavoriteRepository favoriteRepository;
     private final EmailService emailService;
-    private final PasswordEncoder passwordEncoder;
+    private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
     private static final Logger log = LoggerFactory.getLogger(UserServiceImplement.class);
 
     @Override
@@ -155,13 +156,12 @@ public class UserServiceImplement implements UserService {
 
             String temporaryPassword = generateTemporaryPassword();
 
-            userEntity.setPassword(temporaryPassword);
+            userEntity.setPassword(passwordEncoder.encode(temporaryPassword));
             userRepository.save(userEntity);
 
             String changePasswordUrl = "http://localhost:3000/password";
-            String emailText = "임시 비밀번호는: " + temporaryPassword + " 입니다. 비밀번호를 변경하려면 " + changePasswordUrl + " 을 방문해주세요.";
-
-
+            String emailText = "임시 비밀번호는: " + temporaryPassword + " 입니다.\n" +
+                    "로그인 후 비밀번호를 변경해주세요.";
             emailService.sendEmail(email, "임시 비밀번호", emailText);
 
         } catch (Exception exception) {
@@ -173,7 +173,7 @@ public class UserServiceImplement implements UserService {
 
     private String generateTemporaryPassword() {
         int length = 10;
-        String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+";
+        String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
         SecureRandom random = new SecureRandom();
         StringBuilder passwordBuilder = new StringBuilder(length);
         for (int i = 0; i < length; i++) {
