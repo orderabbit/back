@@ -22,6 +22,7 @@ public class UserEntity {
     private String email;
     private String nickname;
     private String profileImage;
+    private String provider;
     private String type;
     private String role;
 
@@ -34,8 +35,7 @@ public class UserEntity {
         this.role = "ROLE_USER";
     }
 
-    public UserEntity(String userId, String email, String type, String nickname, String profileImage
-    ){
+    public UserEntity(String userId, String email, String type, String nickname, String profileImage){
         this.userId = userId;
         this.password = "Password";
         this.email = email;

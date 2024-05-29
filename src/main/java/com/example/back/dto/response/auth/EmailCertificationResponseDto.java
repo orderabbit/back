@@ -2,7 +2,6 @@ package com.example.back.dto.response.auth;
 
 import com.example.back.common.ResponseCode;
 import com.example.back.common.ResponseMessage;
-import com.example.back.dto.request.auth.EmailCertificationRequestDto;
 import com.example.back.dto.response.ResponseDto;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
@@ -21,7 +20,7 @@ public class EmailCertificationResponseDto extends ResponseDto {
     }
 
     public static ResponseEntity<ResponseDto> duplicated(){
-        ResponseDto responseBody = new ResponseDto(ResponseCode.DUPLICATE_ID, ResponseMessage.DUPLICATE_ID);
+        ResponseDto responseBody = new ResponseDto(ResponseCode.DUPLICATED_EMAIL, ResponseMessage.DUPLICATED_EMAIL);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
     }
 
