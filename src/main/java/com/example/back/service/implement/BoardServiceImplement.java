@@ -182,7 +182,7 @@ public class BoardServiceImplement implements BoardService {
             List<ImageEntity> imageEntities = new ArrayList<>();
 
             for (String image : boardImageList) {
-                ImageEntity imageEntity = new ImageEntity(itemNumber, image);
+                ImageEntity imageEntity = new ImageEntity(itemNumber, image, userId);
                 imageEntities.add(imageEntity);
             }
             imageRepository.saveAll(imageEntities);
@@ -245,7 +245,7 @@ public class BoardServiceImplement implements BoardService {
             List<ImageEntity> imageEntities = new ArrayList<>();
 
             for(String image: boardImageList) {
-                ImageEntity imageEntity = new ImageEntity(itemNumber, image);
+                ImageEntity imageEntity = new ImageEntity(itemNumber, image, userId);
                 imageEntities.add(imageEntity);
             }
 

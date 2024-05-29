@@ -17,10 +17,12 @@ public class ImageEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int sequence;
+    private String userId;
     private int itemNumber;
     private String image;
 
-    public ImageEntity(int itemNumber, String image){
+    public ImageEntity(int itemNumber, String image, String userId){
+        this.userId = userId;
         this.itemNumber = itemNumber;
         this.image = image;
     }
