@@ -29,7 +29,6 @@ public class UserServiceImplement implements UserService {
     private final FavoriteRepository favoriteRepository;
     private final ImageRepository imageRepository;
     private final EmailService emailService;
-    private final BoardServiceImplement boardServiceImplement;
     private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
     private static final Logger log = LoggerFactory.getLogger(UserServiceImplement.class);
 
@@ -150,7 +149,6 @@ public class UserServiceImplement implements UserService {
     @Override
     public ResponseEntity<? super PasswordRecoveryResponseDto> passwordRecovery(String email) {
         try {
-
             UserEntity userEntity = userRepository.findByEmail(email);
             if (userEntity == null) return PasswordRecoveryResponseDto.notExistUser();
 

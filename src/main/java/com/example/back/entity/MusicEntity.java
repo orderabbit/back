@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -20,6 +22,8 @@ public class MusicEntity {
     private long id;
 
     private String videoUrl;
+
+    private LocalDateTime createDatetime;
 
     public MusicEntity(PostMusicRequestDto dto){
 
